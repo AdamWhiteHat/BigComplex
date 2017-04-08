@@ -13,7 +13,7 @@ namespace ExtendedNumerics
 		#region Private Data members & Constants
 
 		private BigInteger m_real;
-		private BigInteger m_imaginary;	
+		private BigInteger m_imaginary;
 		private const Double LOG_10_INV = 0.43429448190325;
 
 		#endregion
@@ -56,9 +56,9 @@ namespace ExtendedNumerics
 
 		#region Attributes
 
-		public static readonly BigComplex Zero = new BigComplex(0, 0);
-		public static readonly BigComplex One = new BigComplex(1, 0);
-		public static readonly BigComplex ImaginaryOne = new BigComplex(0, 1);
+		public static readonly BigComplex Zero = new BigComplex(BigInteger.Zero, BigInteger.Zero);
+		public static readonly BigComplex One = new BigComplex(BigInteger.One, BigInteger.Zero);
+		public static readonly BigComplex ImaginaryOne = new BigComplex(BigInteger.Zero, BigInteger.One);
 
 		#endregion
 
@@ -73,6 +73,12 @@ namespace ExtendedNumerics
 		public BigComplex(BigInteger real)  /* Constructor to create a BigComplex number with rectangular co-ordinates  */
 			: this(real, 0)
 		{
+		}
+
+		public BigComplex(double real, double imaginary)  /* Constructor to create a BigComplex number with rectangular co-ordinates  */
+		{
+			this.m_real = (BigInteger)real;
+			this.m_imaginary = (BigInteger)imaginary;
 		}
 
 		public BigComplex(BigInteger real, BigInteger imaginary)  /* Constructor to create a BigComplex number with rectangular co-ordinates  */
@@ -300,7 +306,7 @@ namespace ExtendedNumerics
 		}
 
 		#endregion
-		
+
 		#region Formattig/Parsing options 
 
 		public override String ToString()
@@ -336,72 +342,71 @@ namespace ExtendedNumerics
 		#endregion
 
 		#region Trigonometric operations (methods implementing ITrigonometric) 
-		/*
-		public static BigComplex Sin(BigComplex value) 
+
+		public static BigComplex Sin(BigComplex value)
 		{
-		   double a = value.m_real;
-		   double b = value.m_imaginary;
-		   return new BigComplex(Math.Sin(a) * Math.Cosh(b), Math.Cos(a) * Math.Sinh(b));
+			double a = (double)value.m_real;
+			double b = (double)value.m_imaginary;
+			return new BigComplex(Math.Sin(a) * Math.Cosh(b), Math.Cos(a) * Math.Sinh(b));
 		}
 
 		public static BigComplex Sinh(BigComplex value) // Hyperbolic sin 
 		{
-		   double a = value.m_real;
-		   double b = value.m_imaginary;
-		   return new BigComplex(Math.Sinh(a) * Math.Cos(b), Math.Cosh(a) * Math.Sin(b));
+			double a = (double)value.m_real;
+			double b = (double)value.m_imaginary;
+			return new BigComplex(Math.Sinh(a) * Math.Cos(b), Math.Cosh(a) * Math.Sin(b));
 
 		}
 		public static BigComplex Asin(BigComplex value) // Arcsin 
 		{
-		   return (-ImaginaryOne) * Log(ImaginaryOne * value + Sqrt(One - value * value));
+			return (-ImaginaryOne) * Log(ImaginaryOne * value + Sqrt(One - value * value));
 		}
 
-		public static BigComplex Cos(BigComplex value) 
+		public static BigComplex Cos(BigComplex value)
 		{
-		   double a = value.m_real;
-		   double b = value.m_imaginary;
-		   return new BigComplex(Math.Cos(a) * Math.Cosh(b), - (Math.Sin(a) * Math.Sinh(b)));
+			double a = (double)value.m_real;
+			double b = (double)value.m_imaginary;
+			return new BigComplex(Math.Cos(a) * Math.Cosh(b), -(Math.Sin(a) * Math.Sinh(b)));
 		}
 
 		public static BigComplex Cosh(BigComplex value) // Hyperbolic cos 
 		{
-		   double a = value.m_real;
-		   double b = value.m_imaginary;
-		   return new BigComplex(Math.Cosh(a) * Math.Cos(b), Math.Sinh(a) * Math.Sin(b));
+			double a = (double)value.m_real;
+			double b = (double)value.m_imaginary;
+			return new BigComplex(Math.Cosh(a) * Math.Cos(b), Math.Sinh(a) * Math.Sin(b));
 		}
 
 		public static BigComplex Acos(BigComplex value) // Arccos 
 		{
-		   return (-ImaginaryOne) * Log(value + ImaginaryOne*Sqrt(One - (value * value)));
+			return (-ImaginaryOne) * Log(value + ImaginaryOne * Sqrt(One - (value * value)));
 
 		}
 
-		public static BigComplex Tan(BigComplex value) 
+		public static BigComplex Tan(BigComplex value)
 		{
-		   return (Sin(value) / Cos(value));
+			return (Sin(value) / Cos(value));
 		}
 
 		public static BigComplex Tanh(BigComplex value) // Hyperbolic tan 
 		{
-		   return (Sinh(value) / Cosh(value));
+			return (Sinh(value) / Cosh(value));
 		}
 
 		public static BigComplex Atan(BigComplex value) // Arctan 
 		{
-		   BigComplex Two = new BigComplex(2, 0);
-		   return (ImaginaryOne / Two) * (Log(One - ImaginaryOne * value) - Log(One + ImaginaryOne * value));
+			BigComplex Two = new BigComplex(new BigInteger(2), BigInteger.Zero);
+			return (ImaginaryOne / Two) * (Log(One - ImaginaryOne * value) - Log(One + ImaginaryOne * value));
 		}
-		*/
+
 		#endregion
 
-		#region Other numerical functions         
-		/*
-		public static BigComplex Log(double value) // Log of the BigComplex number value to the base of 'e' 
-		{
-		   return (new BigComplex((Math.Log(Math.Abs(value))), (Math.Atan2(value.m_imaginary, value.m_real))));
+		#region Other numerical functions
 
+		public static BigComplex Log(BigComplex value) // Log of the BigComplex number value to the base of 'e' 
+		{
+			return (new BigComplex(((BigInteger)BigInteger.Log(BigComplex.Abs(value))), ((BigInteger)(Math.Atan2((double)value.m_imaginary, (double)value.m_real)))));
 		}
-		*/
+
 		public static BigComplex Log(Double value, Double baseValue) // Log of the BigComplex number to a the base of a double
 		{
 			return (Math.Log(value) / Math.Log(baseValue));
@@ -420,58 +425,57 @@ namespace ExtendedNumerics
 			return BigComplex.FromPolarCoordinates(Math.Sqrt(value.Magnitude), value.Phase / 2.0);
 		}
 
-		/*
+
 		public static BigComplex Log10(Double value) // Log to the base of 10 of the BigComplex number 
 		{
- 
+
 			BigComplex temp_log = Math.Log(value);
 			return (Scale(temp_log, (Double)LOG_10_INV));
- 
+
 		}
 
 		public static BigComplex Pow(BigComplex value, BigComplex power) // A BigComplex number raised to another BigComplex number 
 		{
- 
-			if (power == BigComplex.Zero) 
+			if (power == BigComplex.Zero)
 			{
 				return BigComplex.One;
 			}
- 
+
 			if (value == BigComplex.Zero)
 			{
 				return BigComplex.Zero;
 			}
- 
-			double a = value.m_real;
-			double b = value.m_imaginary;
-			double c = power.m_real;
-			double d = power.m_imaginary;
- 
-			double rho = BigComplex.Abs(value);
+
+			double a = (double)value.m_real;
+			double b = (double)value.m_imaginary;
+			double c = (double)power.m_real;
+			double d = (double)power.m_imaginary;
+
+			double rho = (double)BigComplex.Abs(value);
 			double theta = Math.Atan2(b, a);
 			double newRho = c * theta + d * Math.Log(rho);
- 
+
 			double t = Math.Pow(rho, c) * Math.Pow(Math.E, -d * theta);
- 
-			return new BigComplex(t * Math.Cos(newRho), t * Math.Sin(newRho));
+
+			return new BigComplex((BigInteger)(t * Math.Cos(newRho)), (BigInteger)(t * Math.Sin(newRho)));
 		}
- 
+
 		public static BigComplex Pow(BigComplex value, Double power) // A BigComplex number raised to a real number 
 		{
-			return Pow(value, new BigComplex(power, 0));
+			return Pow(value, new BigComplex((BigInteger)power, 0));
 		}
-		*/
+
 		#endregion
 
 		#region Private member functions for internal use
-		/*
+
 		private static BigComplex Scale(BigComplex value, Double factor)
-		{ 
-			Double result_re = factor * value.m_real;
-			Double result_im = factor * value.m_imaginary;
-			return (new BigComplex(result_re, result_im));
+		{
+			Double result_re = factor * (double)value.m_real;
+			Double result_im = factor * (double)value.m_imaginary;
+			return (new BigComplex((BigInteger)result_re, (BigInteger)result_im));
 		}
-		*/
+
 		#endregion
 	}
 }
