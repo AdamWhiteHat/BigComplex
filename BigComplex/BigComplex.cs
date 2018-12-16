@@ -311,22 +311,29 @@ namespace ExtendedNumerics
 
 		public override String ToString()
 		{
-			return (String.Format(CultureInfo.CurrentCulture, "({0}, {1})", this.m_real, this.m_imaginary));
+			string i = string.Empty;
+
+			if (this.m_imaginary > 0)
+			{
+				i = $" +{this.m_imaginary} i";
+			}
+
+			return (String.Format(CultureInfo.CurrentCulture, "{0}{1}", this.m_real, i));
 		}
 
 		public String ToString(String format)
 		{
-			return (String.Format(CultureInfo.CurrentCulture, "({0}, {1})", this.m_real.ToString(format, CultureInfo.CurrentCulture), this.m_imaginary.ToString(format, CultureInfo.CurrentCulture)));
+			return (String.Format(CultureInfo.CurrentCulture, "{0} +{1} i", this.m_real.ToString(format, CultureInfo.CurrentCulture), this.m_imaginary.ToString(format, CultureInfo.CurrentCulture)));
 		}
 
 		public String ToString(IFormatProvider provider)
 		{
-			return (String.Format(provider, "({0}, {1})", this.m_real, this.m_imaginary));
+			return (String.Format(provider, "{0} +{1} i", this.m_real, this.m_imaginary));
 		}
 
 		public String ToString(String format, IFormatProvider provider)
 		{
-			return (String.Format(provider, "({0}, {1})", this.m_real.ToString(format, provider), this.m_imaginary.ToString(format, provider)));
+			return (String.Format(provider, "{0} +{1} i", this.m_real.ToString(format, provider), this.m_imaginary.ToString(format, provider)));
 		}
 
 
@@ -397,7 +404,17 @@ namespace ExtendedNumerics
 			BigComplex Two = new BigComplex(new BigInteger(2), BigInteger.Zero);
 			return (ImaginaryOne / Two) * (Log(One - ImaginaryOne * value) - Log(One + ImaginaryOne * value));
 		}
+		
+		private double DegreeToRadian(double angle)
+		{
+			return Math.PI * angle / 180.0;
+		}
 
+		private double RadianToDegree(double angle)
+		{
+			return angle * (180.0 / Math.PI);
+		}
+		
 		#endregion
 
 		#region Other numerical functions
@@ -465,6 +482,38 @@ namespace ExtendedNumerics
 			return Pow(value, new BigComplex((BigInteger)power, 0));
 		}
 
+		public static BigInteger Norm(BigComplex source)
+		{
+			return BigInteger.Pow(BigComplex.Abs(source), 2);
+		}
+
+		public static BigComplex GCD(BigComplex a, BigComplex b)
+		{
+			BigInteger aNorm = BigComplex.Norm(a);
+			BigInteger bNorm = BigComplex.Norm(b);
+
+			if (bNorm > aNorm)
+			{
+				Swap(ref a, ref b);
+			}
+
+			BigComplex result = BigComplex.Zero;
+			BigComplex q = BigComplex.Zero;
+			BigComplex r = BigComplex.One;
+
+			while (r != BigComplex.Zero)
+			{
+				q = BigComplex.Divide(a, b);
+				r = BigComplex.Subtract(a, BigComplex.Multiply(q, b));
+
+				a = b;
+				result = b;
+				b = r;
+			}
+
+			return result;
+		}
+		
 		#endregion
 
 		#region Private member functions for internal use
@@ -474,6 +523,13 @@ namespace ExtendedNumerics
 			Double result_re = factor * (double)value.m_real;
 			Double result_im = factor * (double)value.m_imaginary;
 			return (new BigComplex((BigInteger)result_re, (BigInteger)result_im));
+		}
+		
+		private static void Swap(ref BigComplex a, ref BigComplex b)
+		{
+			BigComplex c = a;
+			a = b;
+			b = c;
 		}
 
 		#endregion
