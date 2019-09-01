@@ -5,7 +5,7 @@ using System.Numerics;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 
-namespace ExtendedNumerics
+namespace ExtendedNumerics.ExtensionMethods
 {
 	public static class BigIntegerExtensionMethods
 	{

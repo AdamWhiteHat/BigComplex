@@ -5,6 +5,7 @@ using System.Numerics;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Globalization;
+using ExtendedNumerics.ExtensionMethods;
 
 namespace ExtendedNumerics
 {
@@ -14,7 +15,7 @@ namespace ExtendedNumerics
 
 		private BigInteger m_real;
 		private BigInteger m_imaginary;
-		private const Double LOG_10_INV = 0.43429448190325;
+		/* private const Double LOG_10_INV = 0.43429448190325; */
 
 		#endregion
 
@@ -36,25 +37,33 @@ namespace ExtendedNumerics
 			}
 		}
 
-		public Double Magnitude
+		public BigInteger Magnitude
 		{
 			get
 			{
-				return Complex.Abs(new Complex((double)this.Real, (double)this.Imaginary));
+				return Abs(this);
 			}
 		}
 
-		public Double Phase
+		public BigInteger Phase
 		{
 			get
 			{
-				return Math.Atan2((double)m_imaginary, (double)m_real);
+				return Atan2_BigInteger(m_imaginary, m_real);
+			}
+		}
+
+		public int Sign
+		{
+			get
+			{
+				return (Real == 0) ? Imaginary.Sign : Real.Sign;
 			}
 		}
 
 		#endregion
 
-		#region Attributes
+		#region Static Values
 
 		public static readonly BigComplex Zero = new BigComplex(BigInteger.Zero, BigInteger.Zero);
 		public static readonly BigComplex One = new BigComplex(BigInteger.One, BigInteger.Zero);
@@ -87,10 +96,15 @@ namespace ExtendedNumerics
 			this.m_imaginary = imaginary;
 		}
 
-		public static BigComplex FromPolarCoordinates(Double magnitude, Double phase) /* Factory method to take polar inputs and create a BigComplex object */
+		public static BigComplex FromPolarCoordinates(BigInteger magnitude, Double phase) /* Factory method to take polar inputs and create a BigComplex object */
 		{
-			Complex result = Complex.FromPolarCoordinates(magnitude, phase);
+			Complex result = new Complex(((double)magnitude * Math.Cos(phase)), ((double)magnitude * Math.Sin(phase)));
 			return new BigComplex(result);
+		}
+
+		public BigComplex Clone()
+		{
+			return new BigComplex(this.m_real, this.m_imaginary);
 		}
 
 		#endregion
@@ -154,20 +168,20 @@ namespace ExtendedNumerics
 		public static BigComplex operator /(BigComplex left, BigComplex right)
 		{
 			// Division : Smith's formula.
-			Double a = (double)left.m_real;
-			Double b = (double)left.m_imaginary;
-			Double c = (double)right.m_real;
-			Double d = (double)right.m_imaginary;
+			BigInteger a = left.m_real;
+			BigInteger b = left.m_imaginary;
+			BigInteger c = right.m_real;
+			BigInteger d = right.m_imaginary;
 
-			if (Math.Abs(d) < Math.Abs(c))
+			if (BigInteger.Abs(d) < BigInteger.Abs(c))
 			{
-				double doc = (d / c);
-				return new BigComplex(new Complex((a + b * doc) / (c + d * doc), (b - a * doc) / (c + d * doc)));
+				BigInteger dc = (d / c);
+				return new BigComplex( ((a + b * dc) / (c + d * dc)), ((b - a * dc) / (c + d * dc)) );
 			}
 			else
 			{
-				double cod = (c / d);
-				return new BigComplex(new Complex((b + a * cod) / (d + c * cod), (-a + b * cod) / (d + c * cod)));
+				BigInteger cd = (c / d);
+				return new BigComplex( ((b + a * cd) / (d + c * cd)), ((-a + b * cd) / (d + c * cd)) );
 			}
 		}
 
@@ -221,6 +235,13 @@ namespace ExtendedNumerics
 
 			return BigComplex.One / value;
 		}
+
+		public BigComplex Mod(BigComplex mod)
+		{
+			BigComplex negQuot = BigComplex.Negate(BigComplex.Divide(this, mod));
+			return BigComplex.Add(this, BigComplex.Multiply(mod, negQuot));
+		}
+
 		#endregion
 
 		#region Comparison Operators
@@ -307,7 +328,7 @@ namespace ExtendedNumerics
 
 		#endregion
 
-		#region Formattig/Parsing options 
+		#region Formatting/Parsing options 
 
 		public override String ToString()
 		{
@@ -373,6 +394,7 @@ namespace ExtendedNumerics
 		{
 			double a = (double)value.m_real;
 			double b = (double)value.m_imaginary;
+			
 			return new BigComplex(Math.Cos(a) * Math.Cosh(b), -(Math.Sin(a) * Math.Sinh(b)));
 		}
 
@@ -404,7 +426,77 @@ namespace ExtendedNumerics
 			BigComplex Two = new BigComplex(new BigInteger(2), BigInteger.Zero);
 			return (ImaginaryOne / Two) * (Log(One - ImaginaryOne * value) - Log(One + ImaginaryOne * value));
 		}
-		
+
+		public static BigInteger Atan(BigInteger value) // Arctan for BigInteger
+		{
+			BigComplex val = new BigComplex(value);
+			BigComplex Two = new BigComplex(new BigInteger(2), BigInteger.Zero);
+			return BigComplex.Abs((ImaginaryOne / Two) * (Log(One - ImaginaryOne * val) - Log(One + ImaginaryOne * val)));
+		}
+
+		public static BigInteger Atan2_BigInteger(BigInteger y, BigInteger x) // 2-argument arctangent 
+		{
+			//sqrt(a ^ 2 + b ^ 2)
+
+			return BigInteger.Multiply
+			(
+				new BigInteger(2),
+				BigComplex.Atan
+				(
+					BigInteger.Divide
+					(
+						y,
+						BigInteger.Add
+						(
+							(BigInteger.Add(BigInteger.Multiply(x, x), BigInteger.Multiply(y, y))).SquareRoot(),
+							x
+						)
+					)
+				)
+			);
+		}
+
+
+		public static double Atan2(BigComplex y, BigComplex x) // 2-argument arctangent 
+		{
+			Complex a = new Complex((double)y.Real, (double)y.Imaginary);
+			Complex b = new Complex((double)x.Real, (double)x.Imaginary);
+
+			if (y.Sign > 0)
+			{
+				return Complex.Abs(Complex.Atan(Complex.Divide(b,a)));
+			}
+			else if (y.Sign < 0 && x.Sign >= 0)
+			{
+				Complex tmp = Complex.Atan(Complex.Divide(b, a));
+				Complex tmp2 = new Complex(tmp.Real + Math.PI, tmp.Imaginary);
+				return Complex.Abs(tmp2);
+			}
+			else if (y.Sign < 0 && x.Sign < 0)
+			{
+				
+				Complex tmp = Complex.Atan(Complex.Divide(b, a));
+				Complex tmp2 = new Complex(tmp.Real - Math.PI, tmp.Imaginary);
+				return Complex.Abs(tmp2);
+			}
+			else if (y.Sign == 0 && x.Sign > 0)
+			{
+				return (Math.PI / 2);
+			}
+			else if (y.Sign == 0 && x.Sign < 0)
+			{
+				return -(Math.PI / 2);
+			}
+			else if (y.Sign == 0 && x.Sign == 0)
+			{
+				return double.NaN;
+			}
+			else
+			{
+				return double.NaN;
+			}
+		}
+
 		private double DegreeToRadian(double angle)
 		{
 			return Math.PI * angle / 180.0;
@@ -424,11 +516,12 @@ namespace ExtendedNumerics
 			return (new BigComplex(((BigInteger)BigInteger.Log(BigComplex.Abs(value))), ((BigInteger)(Math.Atan2((double)value.m_imaginary, (double)value.m_real)))));
 		}
 
-		public static BigComplex Log(Double value, Double baseValue) // Log of the BigComplex number to a the base of a double
+		public static BigComplex Log(BigInteger value, BigInteger baseValue) // Log of the BigComplex number to a the base of a double
 		{
-			return (Math.Log(value) / Math.Log(baseValue));
+			return (BigInteger.Log(value) / BigInteger.Log(baseValue));
 		}
 
+		/*
 		public static BigComplex Exp(BigComplex value) // The BigComplex number raised to e 
 		{
 			Double temp_factor = Math.Exp((double)value.m_real);
@@ -436,20 +529,23 @@ namespace ExtendedNumerics
 			Double result_im = temp_factor * Math.Sin((double)value.m_imaginary);
 			return (new BigComplex((BigInteger)result_re, (BigInteger)result_im));
 		}
+		*/
 
-		public static BigComplex Sqrt(BigComplex value) // Square root ot the BigComplex number 
+		public static BigComplex Sqrt(BigComplex value) // Square root of the BigComplex number 
 		{
-			return BigComplex.FromPolarCoordinates(Math.Sqrt(value.Magnitude), value.Phase / 2.0);
+			Complex sqrt = Complex.FromPolarCoordinates(Math.Sqrt((double)value.Magnitude), (double)(value.Phase / 2));
+			return new BigComplex(sqrt.Real, sqrt.Imaginary);
 		}
 
-
+		/*
 		public static BigComplex Log10(Double value) // Log to the base of 10 of the BigComplex number 
 		{
 
 			BigComplex temp_log = Math.Log(value);
-			return (Scale(temp_log, (Double)LOG_10_INV));
+			return (Scale(temp_log, LOG_10_INV));
 
 		}
+		*/
 
 		public static BigComplex Pow(BigComplex value, BigComplex power) // A BigComplex number raised to another BigComplex number 
 		{
@@ -477,14 +573,16 @@ namespace ExtendedNumerics
 			return new BigComplex((BigInteger)(t * Math.Cos(newRho)), (BigInteger)(t * Math.Sin(newRho)));
 		}
 
+		/*
 		public static BigComplex Pow(BigComplex value, Double power) // A BigComplex number raised to a real number 
 		{
 			return Pow(value, new BigComplex((BigInteger)power, 0));
 		}
+		*/
 
 		public static BigInteger Norm(BigComplex source)
 		{
-			return BigInteger.Pow(BigComplex.Abs(source), 2);
+			return BigComplex.Abs(source);
 		}
 
 		public static BigComplex GCD(BigComplex a, BigComplex b)
@@ -518,10 +616,10 @@ namespace ExtendedNumerics
 
 		#region Private member functions for internal use
 
-		private static BigComplex Scale(BigComplex value, Double factor)
+		private static BigComplex Scale(BigComplex value, BigInteger factor)
 		{
-			Double result_re = factor * (double)value.m_real;
-			Double result_im = factor * (double)value.m_imaginary;
+			BigInteger result_re = factor * value.m_real;
+			BigInteger result_im = factor * value.m_imaginary;
 			return (new BigComplex((BigInteger)result_re, (BigInteger)result_im));
 		}
 		
