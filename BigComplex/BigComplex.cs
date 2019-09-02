@@ -5,7 +5,6 @@ using System.Numerics;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Globalization;
-using ExtendedNumerics.ExtensionMethods;
 
 namespace ExtendedNumerics
 {
