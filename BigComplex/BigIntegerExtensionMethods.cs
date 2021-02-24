@@ -45,5 +45,15 @@ namespace ExtendedNumerics
 			}
 			return input == p ? n : low;
 		}
+
+		public static BigInteger Square(this BigInteger number)
+		{
+			return BigInteger.Multiply(number, number);
+		}
+
+		public static BigInteger Clone(this BigInteger source)
+		{
+			return new BigInteger(source.ToByteArray());
+		}
 	}
 }
