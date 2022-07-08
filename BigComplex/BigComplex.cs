@@ -106,6 +106,51 @@ namespace ExtendedNumerics
 			return new BigComplex(this.m_real, this.m_imaginary);
 		}
 
+		public static BigComplex Parse(string s)
+		{
+			if (string.IsNullOrWhiteSpace(s))
+			{
+				throw new ArgumentException($"Argument {nameof(s)} cannot be null, empty or whitespace");
+			}
+
+			string input = new string(s.Where(c => !char.IsWhiteSpace(c)).ToArray());
+			input = input.Replace('᠆', '-')
+						 .Replace('‐', '-')
+						 .Replace('‒', '-')
+						 .Replace('–', '-')
+						 .Replace('—', '-')
+						 .Replace('―', '-')
+						 .Replace('⁻', '-')
+						 .Replace('₋', '-')
+						 .Replace('−', '-')
+						 .Replace('﹣', '-')
+						 .Replace('－', '-');
+			input = input.Replace('➕', '+')
+						 .Replace('ᐩ', '+')
+						 .Replace('⁺', '+')
+						 .Replace('₊', '+')
+						 .Replace('˖', '+')
+						 .Replace('﹢', '+')
+						 .Replace('＋', '+');
+			string[] parts = input.Split(new char[] { '(', ')', ',', '+', 'i' }, StringSplitOptions.RemoveEmptyEntries);
+
+			if (parts.Length <= 0 || parts.Length > 2)
+			{
+				throw new FormatException($"Argument {nameof(s)} not of the correct format. Expecting format: \"(3, 5)\" or 3 + 5i");
+			}
+
+			BigInteger imaginary = 0;
+			BigInteger real = BigInteger.Parse(parts[0]);
+
+			if (parts.Length == 2)
+			{
+				imaginary = BigInteger.Parse(parts[1]);
+			}
+
+			return new BigComplex(real, imaginary);
+		}
+
+
 		#endregion
 
 		#region Arithmetic Methods
@@ -175,12 +220,12 @@ namespace ExtendedNumerics
 			if (BigInteger.Abs(d) < BigInteger.Abs(c))
 			{
 				BigInteger dc = (d / c);
-				return new BigComplex( ((a + b * dc) / (c + d * dc)), ((b - a * dc) / (c + d * dc)) );
+				return new BigComplex(((a + b * dc) / (c + d * dc)), ((b - a * dc) / (c + d * dc)));
 			}
 			else
 			{
 				BigInteger cd = (c / d);
-				return new BigComplex( ((b + a * cd) / (d + c * cd)), ((-a + b * cd) / (d + c * cd)) );
+				return new BigComplex(((b + a * cd) / (d + c * cd)), ((-a + b * cd) / (d + c * cd)));
 			}
 		}
 
@@ -335,7 +380,7 @@ namespace ExtendedNumerics
 
 			if (this.m_imaginary > 0)
 			{
-				i = $" +{this.m_imaginary} i";
+				i = $" + {this.m_imaginary}i";
 			}
 
 			return (String.Format(CultureInfo.CurrentCulture, "{0}{1}", this.m_real, i));
@@ -343,17 +388,17 @@ namespace ExtendedNumerics
 
 		public String ToString(String format)
 		{
-			return (String.Format(CultureInfo.CurrentCulture, "{0} +{1} i", this.m_real.ToString(format, CultureInfo.CurrentCulture), this.m_imaginary.ToString(format, CultureInfo.CurrentCulture)));
+			return (String.Format(CultureInfo.CurrentCulture, "{0} + {1}i", this.m_real.ToString(format, CultureInfo.CurrentCulture), this.m_imaginary.ToString(format, CultureInfo.CurrentCulture)));
 		}
 
 		public String ToString(IFormatProvider provider)
 		{
-			return (String.Format(provider, "{0} +{1} i", this.m_real, this.m_imaginary));
+			return (String.Format(provider, "{0} + {1}i", this.m_real, this.m_imaginary));
 		}
 
 		public String ToString(String format, IFormatProvider provider)
 		{
-			return (String.Format(provider, "{0} +{1} i", this.m_real.ToString(format, provider), this.m_imaginary.ToString(format, provider)));
+			return (String.Format(provider, "{0} + {1}i", this.m_real.ToString(format, provider), this.m_imaginary.ToString(format, provider)));
 		}
 
 
@@ -393,7 +438,7 @@ namespace ExtendedNumerics
 		{
 			double a = (double)value.m_real;
 			double b = (double)value.m_imaginary;
-			
+
 			return new BigComplex(Math.Cos(a) * Math.Cosh(b), -(Math.Sin(a) * Math.Sinh(b)));
 		}
 
@@ -463,7 +508,7 @@ namespace ExtendedNumerics
 
 			if (y.Sign > 0)
 			{
-				return Complex.Abs(Complex.Atan(Complex.Divide(b,a)));
+				return Complex.Abs(Complex.Atan(Complex.Divide(b, a)));
 			}
 			else if (y.Sign < 0 && x.Sign >= 0)
 			{
@@ -473,7 +518,7 @@ namespace ExtendedNumerics
 			}
 			else if (y.Sign < 0 && x.Sign < 0)
 			{
-				
+
 				Complex tmp = Complex.Atan(Complex.Divide(b, a));
 				Complex tmp2 = new Complex(tmp.Real - Math.PI, tmp.Imaginary);
 				return Complex.Abs(tmp2);
@@ -505,7 +550,7 @@ namespace ExtendedNumerics
 		{
 			return angle * (180.0 / Math.PI);
 		}
-		
+
 		#endregion
 
 		#region Other numerical functions
@@ -610,7 +655,7 @@ namespace ExtendedNumerics
 
 			return result;
 		}
-		
+
 		#endregion
 
 		#region Private member functions for internal use
@@ -621,7 +666,7 @@ namespace ExtendedNumerics
 			BigInteger result_im = factor * value.m_imaginary;
 			return (new BigComplex((BigInteger)result_re, (BigInteger)result_im));
 		}
-		
+
 		private static void Swap(ref BigComplex a, ref BigComplex b)
 		{
 			BigComplex c = a;
