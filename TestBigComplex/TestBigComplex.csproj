@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>net48</TargetFrameworks>
+		<Platforms>x64</Platforms>
+		<OutputType>Library</OutputType>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<Title>TestBigComplex</Title>
+		<Product>TestBigComplex</Product>
+		<RootNamespace>TestBigComplex</RootNamespace>
+		<AssemblyName>TestBigComplex</AssemblyName>
+		<Version>$([System.DateTime]::Now.ToString("yyyy."$([System.DateTime]::Now.DayOfYear)".HHmm"))</Version>
+		<AssemblyVersion>$([System.DateTime]::Now.ToString("yyyy."$([System.DateTime]::Now.DayOfYear)".HHmm"))</AssemblyVersion>
+		<FileVersion>$([System.DateTime]::Now.ToString("yyyy."$([System.DateTime]::Now.DayOfYear)".HHmm"))</FileVersion>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="ExtendedNumerics.BigDecimal" Version="2022.187.2158" />
+		<PackageReference Include="NUnit" Version="3.13.3" />
+		<PackageReference Include="NUnit3TestAdapter" Version="4.2.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\BigComplex\BigComplex.csproj" />
+	</ItemGroup>
+
+
+</Project>
