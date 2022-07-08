@@ -4,26 +4,39 @@
 		<TargetFrameworks>net48</TargetFrameworks>
 		<Platforms>x64</Platforms>
 		<OutputType>Library</OutputType>
+
+		<IsPackable>false</IsPackable>
 	</PropertyGroup>
 
 	<PropertyGroup>
 		<Title>TestBigComplex</Title>
 		<Product>TestBigComplex</Product>
 		<RootNamespace>TestBigComplex</RootNamespace>
-		<AssemblyName>TestBigComplex</AssemblyName>
-		<Version>$([System.DateTime]::Now.ToString("yyyy."$([System.DateTime]::Now.DayOfYear)".HHmm"))</Version>
-		<AssemblyVersion>$([System.DateTime]::Now.ToString("yyyy."$([System.DateTime]::Now.DayOfYear)".HHmm"))</AssemblyVersion>
-		<FileVersion>$([System.DateTime]::Now.ToString("yyyy."$([System.DateTime]::Now.DayOfYear)".HHmm"))</FileVersion>
+		<AssemblyName>TestBigComplex</AssemblyName>		
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<MajorVersion Condition=" '$(MajorVersion)' == '' ">3000</MajorVersion>
+		<MinorVersion Condition=" '$(MinorVersion)' == '' ">0</MinorVersion>
+		<PatchVersion Condition=" '$(PatchVersion)' == '' ">0</PatchVersion>
+
+		<BuildTimestamp>$([System.DateTime]::Now.DayOfYear.ToString().PadLeft(3,'0'))</BuildTimestamp>
+
+		<Version>$(MajorVersion).$(MinorVersion).$(PatchVersion)</Version>
+		<AssemblyVersion>$(Version).$(BuildTimestamp)</AssemblyVersion>
+		<PackageVersion>$(AssemblyVersion)</PackageVersion>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="ExtendedNumerics.BigDecimal" Version="2022.187.2158" />
 		<PackageReference Include="NUnit" Version="3.13.3" />
 		<PackageReference Include="NUnit3TestAdapter" Version="4.2.1" />
+		<PackageReference Include="NUnit.Analyzers" Version="3.3.0" />
+		<PackageReference Include="coverlet.collector" Version="3.1.2" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\BigComplex\BigComplex.csproj" />
+	  <ProjectReference Include="..\BigComplex\BigComplex.csproj" />
 	</ItemGroup>
 
 

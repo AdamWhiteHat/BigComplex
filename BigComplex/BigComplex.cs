@@ -116,7 +116,25 @@ namespace ExtendedNumerics
 			}
 
 			string input = new string(s.Where(c => !char.IsWhiteSpace(c)).ToArray());
-			string[] parts = input.Split(new char[] { '(', ')', ',' }, StringSplitOptions.RemoveEmptyEntries);
+            input = input.Replace('᠆', '-')
+                         .Replace('‐', '-')
+                         .Replace('‒', '-')
+                         .Replace('–', '-')
+                         .Replace('—', '-')
+                         .Replace('―', '-')
+                         .Replace('⁻', '-')
+                         .Replace('₋', '-')
+                         .Replace('−', '-')
+                         .Replace('﹣', '-')
+                         .Replace('－', '-');
+            input = input.Replace('➕', '+')
+                         .Replace('ᐩ', '+')
+                         .Replace('⁺', '+')
+                         .Replace('₊', '+')
+                         .Replace('˖', '+')
+                         .Replace('﹢', '+')
+                         .Replace('＋', '+');
+            string[] parts = input.Split(new char[] { '(', ')', ',' }, StringSplitOptions.RemoveEmptyEntries);
 
 			if (parts.Length <= 0 || parts.Length > 2)
 			{
@@ -366,16 +384,15 @@ namespace ExtendedNumerics
 
 			if (this.m_imaginary > 0)
 			{
-				i = $" +{this.m_imaginary} i";
+				i = $" + {this.m_imaginary}i";
 			}
 
 			return (String.Format(CultureInfo.CurrentCulture, "{0}{1}", this.m_real, i));
 		}
 
-
 		public String ToString(IFormatProvider provider)
 		{
-			return (String.Format(provider, "{0} +{1} i", this.m_real, this.m_imaginary));
+			return (String.Format(provider, "{0} + {1}i", this.m_real, this.m_imaginary));
 		}
 
 		public override Int32 GetHashCode()
@@ -566,9 +583,7 @@ namespace ExtendedNumerics
 		{
 			return angle * (180.0 / Math.PI);
 		}
-
-
-
+		
 		#endregion
 
 		#region Other numerical functions
