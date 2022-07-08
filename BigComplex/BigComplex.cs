@@ -211,22 +211,18 @@ namespace ExtendedNumerics
 
 		public static BigComplex operator /(BigComplex left, BigComplex right)
 		{
-			// Division : Smith's formula.
-			BigInteger a = left.m_real;
-			BigInteger b = left.m_imaginary;
-			BigInteger c = right.m_real;
-			BigInteger d = right.m_imaginary;
+			BigComplex conjg = Conjugate(right);
 
-			if (BigInteger.Abs(d) < BigInteger.Abs(c))
+			var n = left * conjg;
+			var d = right * conjg;
+
+			if (n.Imaginary != 0 && d.Imaginary == 0)
 			{
-				BigInteger dc = (d / c);
-				return new BigComplex(((a + b * dc) / (c + d * dc)), ((b - a * dc) / (c + d * dc)));
+				// a+bi/d = a/d + b/di
+				return new BigComplex(BigInteger.Divide(n.Real, d.Real), BigInteger.Divide(n.Imaginary, d.Real));
 			}
-			else
-			{
-				BigInteger cd = (c / d);
-				return new BigComplex(((b + a * cd) / (d + c * cd)), ((-a + b * cd) / (d + c * cd)));
-			}
+			// (n.Imaginary == 0 && d.Imaginary == 0)
+			return new BigComplex(BigInteger.Divide(n.Real, d.Real), 0);
 		}
 
 		#endregion
@@ -244,29 +240,20 @@ namespace ExtendedNumerics
 			// sqrt(a^2 + b^2) == a/a * sqrt(a^2 + b^2) = a * sqrt(a^2/a^2 + b^2/a^2)
 			// Using the above we can factor out the square of the larger component to dodge overflow.
 
-
 			BigInteger c = BigInteger.Abs(value.m_real);
 			BigInteger d = BigInteger.Abs(value.m_imaginary);
 
-			if (c > d)
-			{
-				BigInteger r = d / c;
-				return c * (BigInteger.One + r * r).SquareRoot();
-			}
-			else if (d.IsZero)
+			if (d.IsZero)
 			{
 				return c;  // c is either 0.0 or NaN
 			}
-			else
-			{
-				BigInteger r = c / d;
-				return (d * (BigInteger.One + r * r).SquareRoot());
-			}
+
+			return ((c * c) + (d * d)).SquareRoot();
 		}
 		public static BigComplex Conjugate(BigComplex value)
 		{
 			// Conjugate of a BigComplex number: the conjugate of x+i*y is x-i*y
-			return (new BigComplex(value.m_real, (-value.m_imaginary)));
+			return (new BigComplex(value.m_real, BigInteger.Negate(value.m_imaginary)));
 
 		}
 		public static BigComplex Reciprocal(BigComplex value)
@@ -378,9 +365,14 @@ namespace ExtendedNumerics
 		{
 			string i = string.Empty;
 
-			if (this.m_imaginary > 0)
+			int sign = this.m_imaginary.Sign;
+			if (sign == 1)
 			{
 				i = $" + {this.m_imaginary}i";
+			}
+			else if (sign == -1)
+			{
+				i = $" - {BigInteger.Abs(this.m_imaginary)}i";
 			}
 
 			return (String.Format(CultureInfo.CurrentCulture, "{0}{1}", this.m_real, i));
