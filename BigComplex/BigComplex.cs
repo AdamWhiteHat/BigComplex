@@ -675,13 +675,13 @@ namespace ExtendedNumerics
 			BigDecimal sqrXY = BigDecimal.NthRoot(value.Real.Square() + value.Imaginary.Square(), 2, precision.HasValue ? precision.Value : Precision);
 
 			BigComplex sgn = new BigComplex(new BigDecimal(value.Imaginary.Sign == 0 ? 1 : value.Imaginary.Sign));
-			 
+
 			var A = BigDecimal.Divide(BigDecimal.Add(sqrXY, value.Real), two);
 			var B1 = BigDecimal.Subtract(sqrXY, value.Real);
 			var B = BigDecimal.Divide(B1, two);
 
-			BigComplex left = new BigComplex(BigDecimal.NthRoot(A, 2, precision.HasValue ? precision.Value : Precision));
-			BigComplex right = new BigComplex(BigDecimal.NthRoot(B, 2, precision.HasValue ? precision.Value : Precision));
+			BigComplex left = new BigComplex(BigDecimal.NthRoot(BigDecimal.Abs(A), 2, precision.HasValue ? precision.Value : Precision));
+			BigComplex right = new BigComplex(BigDecimal.NthRoot(BigDecimal.Abs(B), 2, precision.HasValue ? precision.Value : Precision));
 
 			BigComplex rhs = BigComplex.Multiply(BigComplex.Multiply(BigComplex.ImaginaryOne, sgn), right);
 

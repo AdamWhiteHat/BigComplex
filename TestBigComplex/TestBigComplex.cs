@@ -126,7 +126,7 @@ namespace TestBigComplex
 		{
 			string expectedValue = "0 +5 i";
 
-			BigComplex negativeFive = new BigComplex(new BigInteger(-25));
+			BigComplex negativeFive = new BigComplex(new BigDecimal(-25));
 
 			BigComplex sqrtNegativeFive6 = BigComplex.Sqrt6(negativeFive, Precision);
 
