@@ -7,11 +7,11 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<Title>ExtendedArithmetic.BigComplex</Title>
-		<Product>ExtendedArithmetic.BigComplex</Product>
-		<AssemblyName>ExtendedArithmetic.BigComplex</AssemblyName>
-		<AssemblyTitle>ExtendedArithmetic.BigComplex</AssemblyTitle>
-		<PackageId>ExtendedArithmetic.BigComplex</PackageId>
+		<Title>ExtendedNumerics.BigComplex</Title>
+		<Product>ExtendedNumerics.BigComplex</Product>
+		<AssemblyName>ExtendedNumerics.BigComplex</AssemblyName>
+		<AssemblyTitle>ExtendedNumerics.BigComplex</AssemblyTitle>
+		<PackageId>ExtendedNumerics.BigComplex</PackageId>
 		<Description>Arbitrary precision complex (imaginary) numbers.</Description>
 		<Authors>Adam White</Authors>
 		<Company>Adam White</Company>
