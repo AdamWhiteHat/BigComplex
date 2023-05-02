@@ -1,10 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net48</TargetFrameworks>
-		<Platforms>x64</Platforms>
+		<TargetFrameworks>net45;net46;net48;netcoreapp3.1;net5.0;net6.0;net7.0</TargetFrameworks>
+		<Platforms>AnyCPU</Platforms>
 		<OutputType>Library</OutputType>
-
 		<IsPackable>false</IsPackable>
 	</PropertyGroup>
 
@@ -28,15 +27,14 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="ExtendedNumerics.BigDecimal" Version="2022.187.2158" />
-		<PackageReference Include="NUnit" Version="3.13.3" />
-		<PackageReference Include="NUnit3TestAdapter" Version="4.2.1" />
-		<PackageReference Include="NUnit.Analyzers" Version="3.3.0" />
-		<PackageReference Include="coverlet.collector" Version="3.1.2" />
+		<PackageReference Include="ExtendedNumerics.BigDecimal" Version="3000.0.0.280" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
+		<PackageReference Include="NUnit" Version="3.12.0" />
+		<PackageReference Include="NUnit3TestAdapter" Version="4.1.0" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\BigComplex\BigComplex.csproj" />
+		<ProjectReference Include="..\BigComplex\BigComplex.csproj" />
 	</ItemGroup>
 
 

@@ -9,18 +9,18 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestBigComplex", "TestBigCo
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|x64 = Debug|x64
-		Release|x64 = Release|x64
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{29016E3B-F3E9-4662-A773-19AD603DE67D}.Debug|x64.ActiveCfg = Debug|x64
-		{29016E3B-F3E9-4662-A773-19AD603DE67D}.Debug|x64.Build.0 = Debug|x64
-		{29016E3B-F3E9-4662-A773-19AD603DE67D}.Release|x64.ActiveCfg = Release|x64
-		{29016E3B-F3E9-4662-A773-19AD603DE67D}.Release|x64.Build.0 = Release|x64
-		{1DD83150-2554-4E89-A144-2BCFDFCD12E0}.Debug|x64.ActiveCfg = Debug|x64
-		{1DD83150-2554-4E89-A144-2BCFDFCD12E0}.Debug|x64.Build.0 = Debug|x64
-		{1DD83150-2554-4E89-A144-2BCFDFCD12E0}.Release|x64.ActiveCfg = Release|x64
-		{1DD83150-2554-4E89-A144-2BCFDFCD12E0}.Release|x64.Build.0 = Release|x64
+		{29016E3B-F3E9-4662-A773-19AD603DE67D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29016E3B-F3E9-4662-A773-19AD603DE67D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29016E3B-F3E9-4662-A773-19AD603DE67D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29016E3B-F3E9-4662-A773-19AD603DE67D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1DD83150-2554-4E89-A144-2BCFDFCD12E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DD83150-2554-4E89-A144-2BCFDFCD12E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DD83150-2554-4E89-A144-2BCFDFCD12E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DD83150-2554-4E89-A144-2BCFDFCD12E0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
