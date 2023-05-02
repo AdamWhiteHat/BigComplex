@@ -19,10 +19,10 @@ namespace TestBigComplex
 		[Test]
 		public void TestAddition()
 		{
-			var expected = "10 + 18i";
+			var expected = "(10, 18)";
 
-			BigComplex low = BigComplex.Parse("3 + 13i");
-			BigComplex high = BigComplex.Parse("7 + 5i");
+			BigComplex low = BigComplex.Parse("(3, 13)");
+			BigComplex high = BigComplex.Parse("(7, 5)");
 
 			var result = high + low;
 			var actual = result.ToString();
@@ -35,10 +35,10 @@ namespace TestBigComplex
 		[Test]
 		public void TestSubtraction()
 		{
-			var expected = "4 - 8i";
+			var expected = "(4, -8)";
 
-			BigComplex low = BigComplex.Parse("3 + 13i");
-			BigComplex high = BigComplex.Parse("7 + 5i");
+			BigComplex low = BigComplex.Parse("(3, 13)");
+			BigComplex high = BigComplex.Parse("(7, 5)");
 
 			var result = high - low;
 			var actual = result.ToString();
@@ -51,10 +51,10 @@ namespace TestBigComplex
 		[Test]
 		public void TestMultiply()
 		{
-			var expected = "-44 + 106i";
+			var expected = "(-44, 106)";
 
-			BigComplex low = BigComplex.Parse("3 + 13i");
-			BigComplex high = BigComplex.Parse("7 + 5i");
+			BigComplex low = BigComplex.Parse("(3, 13)");
+			BigComplex high = BigComplex.Parse("(7, 5)");
 
 			var result = high * low;
 			var actual = result.ToString();
@@ -69,8 +69,8 @@ namespace TestBigComplex
 		{
 			var expected = "2";
 
-			BigComplex low = BigComplex.Parse("3 + 2i");
-			BigComplex high = BigComplex.Parse("6 + 4i");
+			BigComplex low = BigComplex.Parse("(3, 2)");
+			BigComplex high = BigComplex.Parse("(6, 4)");
 
 			var result = high / low;
 			var actual = result.ToString();
@@ -86,7 +86,7 @@ namespace TestBigComplex
 		{
 			var expected = "5";
 
-			BigComplex low = BigComplex.Parse("4 + 3i");
+			BigComplex low = BigComplex.Parse("(4, 3)");
 
 			var result = BigComplex.Abs(low);
 			var actual = result.ToString();
@@ -101,7 +101,7 @@ namespace TestBigComplex
 		{
 			var expected = "4";
 
-			BigComplex low = BigComplex.Parse("4 + 0i");
+			BigComplex low = BigComplex.Parse("(4, 0)");
 
 			var result = BigComplex.Abs(low);
 			var actual = result.ToString();
@@ -115,9 +115,9 @@ namespace TestBigComplex
 		[Test]
 		public void TestConjugate()
 		{
-			var expected = "4 - 3i";
+			var expected = "(4, -3)";
 
-			BigComplex low = BigComplex.Parse("4 + 3i");
+			BigComplex low = BigComplex.Parse("(4, 3)");
 
 			var result = BigComplex.Conjugate(low);
 			var actual = result.ToString();
@@ -131,9 +131,9 @@ namespace TestBigComplex
 		[Test]
 		public void TestReciprocal()
 		{
-			var expected = "0 - 1i";
+			var expected = "(0, -1)";
 
-			BigComplex low = BigComplex.Parse("0 + 1i");
+			BigComplex low = BigComplex.Parse("(0, 1)");
 
 			var result = BigComplex.Reciprocal(low);
 			var actual = result.ToString();

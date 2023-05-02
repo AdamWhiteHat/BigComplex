@@ -371,27 +371,29 @@ namespace ExtendedNumerics
 
         #region Formatting/Parsing options 
 
-        public override String ToString()
-        {
-            string i = string.Empty;
+		public override String ToString()
+		{
+			if (this.m_imaginary == 0)
+			{
+				return this.m_real.ToString();
+			}
+			return String.Format(CultureInfo.CurrentCulture, "({0}, {1})", this.m_real, this.m_imaginary);
+		}
 
-            int sign = this.m_imaginary.Sign;
-            if (sign == 1)
-            {
-                i = $" + {this.m_imaginary}i";
-            }
-            else if (sign == -1)
-            {
-                i = $" - {BigDecimal.Abs(this.m_imaginary)}i";
-            }
+		public String ToString(String format)
+		{
+			return String.Format(CultureInfo.CurrentCulture, "({0}, {1})", this.m_real.ToString(format, CultureInfo.CurrentCulture), this.m_imaginary.ToString(format, CultureInfo.CurrentCulture));
+		}
 
-            return (String.Format(CultureInfo.CurrentCulture, "{0}{1}", this.m_real, i));
-        }
+		public String ToString(IFormatProvider provider)
+		{
+			return String.Format(provider, "({0}, {1})", this.m_real, this.m_imaginary);
+		}
 
-        public String ToString(IFormatProvider provider)
-        {
-            return (String.Format(provider, "{0} + {1}i", this.m_real, this.m_imaginary));
-        }
+		public String ToString(String format, IFormatProvider provider)
+		{
+			return String.Format(provider, "({0}, {1})", this.m_real.ToString(format, provider), this.m_imaginary.ToString(format, provider));
+		}
 
         public override Int32 GetHashCode()
         {

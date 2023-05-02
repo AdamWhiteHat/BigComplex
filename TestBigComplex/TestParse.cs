@@ -18,7 +18,7 @@ namespace TestBigComplex
 		[Test]
 		public void Parse()
 		{
-			string expected = "3 + 4i";
+			string expected001 = "(3, 4)";
 			string expected004 = "3";
 
 			string test001 = "(3, 4)";
@@ -36,9 +36,9 @@ namespace TestBigComplex
 			string actual003 = bc003.ToString();
 			string actual004 = bc004.ToString();
 
-			Assert.AreEqual(expected, actual001, $"{test001} => {actual001}");
-			Assert.AreEqual(expected, actual002, $"{test002} => {actual002}");
-			Assert.AreEqual(expected, actual003, $"{test003} => {actual003}");
+			Assert.AreEqual(expected001, actual001, $"{test001} => {actual001}");
+			Assert.AreEqual(expected001, actual002, $"{test002} => {actual002}");
+			Assert.AreEqual(expected001, actual003, $"{test003} => {actual003}");
 			Assert.AreEqual(expected004, actual004, $"{test004} => {actual004}");
 		}
 	}
