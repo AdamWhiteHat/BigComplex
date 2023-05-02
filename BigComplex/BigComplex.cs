@@ -371,16 +371,28 @@ namespace ExtendedNumerics
 
 		public String ToString(String format)
 		{
+			if (this.m_imaginary == 0)
+			{
+				return String.Format(CultureInfo.CurrentCulture, "{0}", this.m_real.ToString(format, CultureInfo.CurrentCulture));
+			}
 			return String.Format(CultureInfo.CurrentCulture, "({0}, {1})", this.m_real.ToString(format, CultureInfo.CurrentCulture), this.m_imaginary.ToString(format, CultureInfo.CurrentCulture));
 		}
 
 		public String ToString(IFormatProvider provider)
 		{
+			if (this.m_imaginary == 0)
+			{
+				return String.Format(provider, "{0}", this.m_real);
+			}
 			return String.Format(provider, "({0}, {1})", this.m_real, this.m_imaginary);
 		}
 
 		public String ToString(String format, IFormatProvider provider)
 		{
+			if (this.m_imaginary == 0)
+			{
+				return String.Format(provider, "{0}", this.m_real.ToString(format, provider));
+			}
 			return String.Format(provider, "({0}, {1})", this.m_real.ToString(format, provider), this.m_imaginary.ToString(format, provider));
 		}
 
