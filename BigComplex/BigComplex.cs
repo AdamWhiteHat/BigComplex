@@ -301,7 +301,6 @@ namespace ExtendedNumerics
 		public bool Equals(BigComplex value)
 		{
 			return ((this.m_real.Equals(value.m_real)) && (this.m_imaginary.Equals(value.m_imaginary)));
-
 		}
 
 		#endregion
@@ -363,36 +362,27 @@ namespace ExtendedNumerics
 
 		public override String ToString()
 		{
-			string i = string.Empty;
-
-			int sign = this.m_imaginary.Sign;
-			if (sign == 1)
+			if (this.m_imaginary == 0)
 			{
-				i = $" + {this.m_imaginary}i";
+				return this.m_real.ToString();
 			}
-			else if (sign == -1)
-			{
-				i = $" - {BigInteger.Abs(this.m_imaginary)}i";
-			}
-
-			return (String.Format(CultureInfo.CurrentCulture, "{0}{1}", this.m_real, i));
+			return String.Format(CultureInfo.CurrentCulture, "({0}, {1})", this.m_real, this.m_imaginary);
 		}
 
 		public String ToString(String format)
 		{
-			return (String.Format(CultureInfo.CurrentCulture, "{0} + {1}i", this.m_real.ToString(format, CultureInfo.CurrentCulture), this.m_imaginary.ToString(format, CultureInfo.CurrentCulture)));
+			return String.Format(CultureInfo.CurrentCulture, "({0}, {1})", this.m_real.ToString(format, CultureInfo.CurrentCulture), this.m_imaginary.ToString(format, CultureInfo.CurrentCulture));
 		}
 
 		public String ToString(IFormatProvider provider)
 		{
-			return (String.Format(provider, "{0} + {1}i", this.m_real, this.m_imaginary));
+			return String.Format(provider, "({0}, {1})", this.m_real, this.m_imaginary);
 		}
 
 		public String ToString(String format, IFormatProvider provider)
 		{
-			return (String.Format(provider, "{0} + {1}i", this.m_real.ToString(format, provider), this.m_imaginary.ToString(format, provider)));
+			return String.Format(provider, "({0}, {1})", this.m_real.ToString(format, provider), this.m_imaginary.ToString(format, provider));
 		}
-
 
 		public override Int32 GetHashCode()
 		{
@@ -421,6 +411,7 @@ namespace ExtendedNumerics
 			return new BigComplex(Math.Sinh(a) * Math.Cos(b), Math.Cosh(a) * Math.Sin(b));
 
 		}
+
 		public static BigComplex Asin(BigComplex value) // Arcsin 
 		{
 			return (-ImaginaryOne) * Log(ImaginaryOne * value + Sqrt(One - value * value));
@@ -491,7 +482,6 @@ namespace ExtendedNumerics
 				)
 			);
 		}
-
 
 		public static double Atan2(BigComplex y, BigComplex x) // 2-argument arctangent 
 		{

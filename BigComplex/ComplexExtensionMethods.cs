@@ -9,51 +9,6 @@ namespace ExtendedNumerics.ExtensionMethods
 {
 	public static class ComplexExtensionMethods
 	{
-		public static string FormatString(this Complex source)
-		{
-			var real = source.Real;
-			var im = source.Imaginary;
-
-			bool includeReal = (real != 0 && real != double.NaN && real != double.NegativeInfinity && real != double.PositiveInfinity);
-			bool includeIm = (im != 0 && im != double.NaN && im != double.NegativeInfinity && im != double.PositiveInfinity);
-
-			if (!includeReal && !includeIm)
-			{
-				return "0";
-			}
-
-			string result = "";
-			if (includeReal)
-			{
-				result = real.ToString();
-			}
-
-			if (includeIm)
-			{
-				bool imNegative = (im < 0);
-				string signText = imNegative ? "-" : "+";
-
-				if (includeReal)
-				{
-					result += $" {signText} ";
-				}
-				else if (imNegative)
-				{
-					result += signText;
-				}
-
-				double absIm = Math.Abs(im);
-				if (absIm > 1)
-				{
-					result += $"{absIm}";
-				}
-
-				result += "i";
-			}
-
-			return result;
-		}
-
 		public static Complex Clone(this Complex source)
 		{
 			return new Complex(source.Real, source.Imaginary);
