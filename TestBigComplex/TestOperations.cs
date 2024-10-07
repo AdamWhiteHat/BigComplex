@@ -142,5 +142,16 @@ namespace TestBigComplex
 			TestContext.WriteLine(description);
 			Assert.AreEqual(expected, actual, description);
 		}
+
+		[Test]
+		public void TestPow()
+		{
+			BigComplex toSquare = new BigComplex((BigInteger)0, 1);
+
+			string expected = "-1";
+			BigComplex actual = BigComplex.Pow(toSquare, 2);
+
+			Assert.AreEqual(expected, actual.ToString());
+		}
 	}
 }
