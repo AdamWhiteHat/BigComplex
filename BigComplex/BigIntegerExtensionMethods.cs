@@ -20,6 +20,10 @@ namespace ExtendedNumerics
 			{
 				input = -input;
 			}
+			if (number == BigInteger.One)
+			{
+				return BigInteger.One;
+			}
 
 			BigInteger n = new BigInteger(0);
 			BigInteger p = new BigInteger(0);
