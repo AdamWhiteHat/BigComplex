@@ -48,7 +48,7 @@ namespace ExtendedNumerics
 		{
 			get
 			{
-				return (BigDecimal)Math.Atan2((double)m_imaginary, (double)m_real);
+				return Atan2(m_imaginary, m_real);
 			}
 		}
 
@@ -68,7 +68,19 @@ namespace ExtendedNumerics
 		public static readonly BigComplex One = new BigComplex(BigDecimal.One, BigDecimal.Zero);
 		public static readonly BigComplex ImaginaryOne = new BigComplex(BigDecimal.Zero, BigDecimal.One);
 
-		public static int Precision = 20;
+		public static int Precision
+		{
+			get { return BigDecimal.Precision; }
+			set
+			{
+				BigDecimal.Precision = value;
+			}
+		}
+
+		static BigComplex()
+		{
+			BigComplex.Precision = 20;
+		}
 
 		#endregion
 
@@ -95,10 +107,10 @@ namespace ExtendedNumerics
 			this.m_imaginary = imaginary.Clone();
 		}
 
-		public static BigComplex FromPolarCoordinates(BigDecimal magnitude, Double phase) /* Factory method to take polar inputs and create a BigComplex object */
+		public static BigComplex FromPolarCoordinates(BigDecimal magnitude, BigDecimal phase) /* Factory method to take polar inputs and create a BigComplex object */
 		{
-			double magnitudeCos = (double)magnitude * Math.Cos(phase);
-			double magnitudeSin = (double)magnitude * Math.Sin(phase);
+			BigDecimal magnitudeCos = magnitude * BigDecimal.Cos(phase);
+			BigDecimal magnitudeSin = magnitude * BigDecimal.Sin(phase);
 
 			return new BigComplex(magnitudeCos, magnitudeSin);
 		}
@@ -242,13 +254,24 @@ namespace ExtendedNumerics
 
 		#region Other arithmetic operations 
 
+		public BigComplex Round()
+		{
+			return BigComplex.Round(this);
+		}
+
+		public static BigComplex Round(BigComplex input)
+		{
+			return Round(input, Precision);
+		}
+
+		public static BigComplex Round(BigComplex input, int precision)
+		{
+			return new BigComplex(BigDecimal.Round(input.Real, precision), BigDecimal.Round(input.Imaginary, precision));
+		}
+
+
 		public static BigDecimal Abs(BigComplex value)
 		{
-			//if(Double.IsInfinity(value.m_real) || Double.IsInfinity(value.m_imaginary))
-			//{
-			//    return double.PositiveInfinity;
-			//}
-
 			// |value| == sqrt(a^2 + b^2)
 			// sqrt(a^2 + b^2) == a/a * sqrt(a^2 + b^2) = a * sqrt(a^2/a^2 + b^2/a^2)
 			// Using the above we can factor out the square of the larger component to dodge overflow.
@@ -270,7 +293,7 @@ namespace ExtendedNumerics
 				return c;  // c is either 0.0 or NaN
 			}
 
-			return BigDecimal.NthRoot((c * c) + (d * d), 2, BigDecimal.Precision);
+			return BigDecimal.NthRoot((c * c) + (d * d), 2, Precision);
 		}
 		public static BigComplex Conjugate(BigComplex value)
 		{
@@ -416,45 +439,45 @@ namespace ExtendedNumerics
 
 		public static BigComplex Sin(BigComplex value)
 		{
-			double a = (double)value.m_real;
-			double b = (double)value.m_imaginary;
-			return new BigComplex(Math.Sin(a) * Math.Cosh(b), Math.Cos(a) * Math.Sinh(b));
+			BigDecimal a = value.m_real;
+			BigDecimal b = value.m_imaginary;
+			return new BigComplex(BigDecimal.Sin(a) * BigDecimal.Cosh(b), BigDecimal.Cos(a) * BigDecimal.Sinh(b));
 		}
 
 		public static BigComplex Sinh(BigComplex value) // Hyperbolic sin 
 		{
-			double a = (double)value.m_real;
-			double b = (double)value.m_imaginary;
-			return new BigComplex(Math.Sinh(a) * Math.Cos(b), Math.Cosh(a) * Math.Sin(b));
+			BigDecimal a = value.m_real;
+			BigDecimal b = value.m_imaginary;
+			return new BigComplex(BigDecimal.Sinh(a) * BigDecimal.Cos(b), BigDecimal.Cosh(a) * BigDecimal.Sin(b));
 
 		}
-		/*
+
 		public static BigComplex Asin(BigComplex value) // Asin 
 		{
 			return (-ImaginaryOne) * Log(ImaginaryOne * value + Sqrt(One - value * value));
 		}
-		*/
+
 		public static BigComplex Cos(BigComplex value)
 		{
-			double a = (double)value.m_real;
-			double b = (double)value.m_imaginary;
+			BigDecimal a = value.m_real;
+			BigDecimal b = value.m_imaginary;
 
-			return new BigComplex(Math.Cos(a) * Math.Cosh(b), -(Math.Sin(a) * Math.Sinh(b)));
+			return new BigComplex(BigDecimal.Cos(a) * BigDecimal.Cosh(b), -(BigDecimal.Sin(a) * BigDecimal.Sinh(b)));
 		}
 
 		public static BigComplex Cosh(BigComplex value) // Hyperbolic cos 
 		{
-			double a = (double)value.m_real;
-			double b = (double)value.m_imaginary;
-			return new BigComplex(Math.Cosh(a) * Math.Cos(b), Math.Sinh(a) * Math.Sin(b));
+			BigDecimal a = value.m_real;
+			BigDecimal b = value.m_imaginary;
+			return new BigComplex(BigDecimal.Cosh(a) * BigDecimal.Cos(b), BigDecimal.Sinh(a) * BigDecimal.Sin(b));
 		}
-		/*
+
 		public static BigComplex Acos(BigComplex value) // Arccos 
 		{
 			return (-ImaginaryOne) * Log(value + ImaginaryOne * Sqrt(One - (value * value)));
 
 		}
-		*/
+
 		public static BigComplex Tan(BigComplex value)
 		{
 			return (Sin(value) / Cos(value));
@@ -464,7 +487,8 @@ namespace ExtendedNumerics
 		{
 			return (Sinh(value) / Cosh(value));
 		}
-		/*
+
+
 		public static BigComplex Atan(BigComplex value) // Arctan 
 		{
 			BigComplex Two = new BigComplex(new BigDecimal(2), BigDecimal.Zero);
@@ -499,7 +523,7 @@ namespace ExtendedNumerics
 			BigComplex numerator = new BigComplex(y, x);
 
 			BigDecimal addSquares = BigDecimal.Add(y.Square(), x.Square());
-			BigDecimal sqrt = BigDecimal.NthRoot(addSquares, 2, precision);
+			BigDecimal sqrt = BigDecimal.NthRoot(addSquares, 2, Precision);
 
 			BigComplex denominator = new BigComplex(sqrt);
 
@@ -507,67 +531,67 @@ namespace ExtendedNumerics
 
 			BigComplex negI = new BigComplex(BigDecimal.Zero, BigDecimal.MinusOne);
 
-			var result = negI * Log(quotient);
+			BigComplex result = negI * Log(quotient);
 
 			return result;
 		}
 
-		public static double Atan2(double y, double x)
+
+		public static BigDecimal Atan2(BigDecimal y, BigDecimal x)
 		{
-			double result = 0;
+			BigDecimal result = 0;
 			if (x > 0)
 			{
-				result = Math.Atan(y / x);
+				result = BigDecimal.Arctan(y / x);
 			}
 			else if (x < 0 && y >= 0)
 			{
-				result = Math.Atan(y / x) + Math.PI;
+				result = BigDecimal.Arctan(y / x) + BigDecimal.Pi;
 			}
 			else if (x < 0 && y < 0)
 			{
-				result = Math.Atan(y / x) - Math.PI;
+				result = BigDecimal.Arctan(y / x) - BigDecimal.Pi;
 			}
 			else if (x == 0 && y > 0)
 			{
-				result = Math.PI / 2;
+				result = BigDecimal.Pi / 2;
 			}
 			else if (x == 0 && y < 0)
 			{
-				result = -Math.PI / 2;
+				result = -BigDecimal.Pi / 2;
 			}
 			return result;
 		}
 
 
-		public static double Atan2_BigComplex(BigComplex y, BigComplex x) // 2-argument arctangent 
+		public static BigDecimal Atan2(BigComplex y, BigComplex x) // 2-argument arctangent 
 		{
-			Complex a = new Complex((double)y.Real, (double)y.Imaginary);
-			Complex b = new Complex((double)x.Real, (double)x.Imaginary);
+			BigComplex a = new BigComplex(y.Real, y.Imaginary);
+			BigComplex b = new BigComplex(x.Real, x.Imaginary);
 
 			if (y.Sign > 0)
 			{
-				return Complex.Abs(Complex.Atan(Complex.Divide(b, a)));
+				return BigComplex.Abs(BigComplex.Atan(BigComplex.Divide(b, a)));
 			}
 			else if (y.Sign < 0 && x.Sign >= 0)
 			{
-				Complex tmp = Complex.Atan(Complex.Divide(b, a));
-				Complex tmp2 = new Complex(tmp.Real + Math.PI, tmp.Imaginary);
-				return Complex.Abs(tmp2);
+				BigComplex tmp = BigComplex.Atan(BigComplex.Divide(b, a));
+				BigComplex tmp2 = new BigComplex(tmp.Real + BigDecimal.Pi, tmp.Imaginary);
+				return BigComplex.Abs(tmp2);
 			}
 			else if (y.Sign < 0 && x.Sign < 0)
 			{
-
-				Complex tmp = Complex.Atan(Complex.Divide(b, a));
-				Complex tmp2 = new Complex(tmp.Real - Math.PI, tmp.Imaginary);
-				return Complex.Abs(tmp2);
+				BigComplex tmp = BigComplex.Atan(BigComplex.Divide(b, a));
+				BigComplex tmp2 = new BigComplex(tmp.Real - BigDecimal.Pi, tmp.Imaginary);
+				return BigComplex.Abs(tmp2);
 			}
 			else if (y.Sign == 0 && x.Sign > 0)
 			{
-				return (Math.PI / 2);
+				return (BigDecimal.Pi / 2);
 			}
 			else if (y.Sign == 0 && x.Sign < 0)
 			{
-				return -(Math.PI / 2);
+				return BigDecimal.Negate(BigDecimal.Pi / 2);
 			}
 			else if (y.Sign == 0 && x.Sign == 0)
 			{
@@ -578,49 +602,46 @@ namespace ExtendedNumerics
 				return double.NaN;
 			}
 		}
-		*/
 
-		private double DegreeToRadian(double angle)
+		public BigDecimal DegreeToRadian(BigDecimal angle)
 		{
-			return Math.PI * angle / 180.0;
+			return BigDecimal.Pi * angle / 180.0;
 		}
 
-		private double RadianToDegree(double angle)
+		public BigDecimal RadianToDegree(BigDecimal angle)
 		{
-			return angle * (180.0 / Math.PI);
+			return angle * (180.0 / BigDecimal.Pi);
 		}
 
 		#endregion
 
 		#region Other numerical functions
-		/*
+
 		public static BigComplex Log(BigComplex value) // Log of the BigComplex number value to the base of 'e' 
 		{
-			double arctan = Math.Atan2((double)value.m_imaginary, (double)value.m_real);
+			BigDecimal arctan = Atan2(value.m_imaginary, value.m_real);
 
 			BigDecimal abs = Abs(value);
 
-			double log = BigDecimal.Log(abs);
+			BigDecimal log = BigDecimal.Ln(abs);
 
-			Complex.Log
-
-			return new BigComplex(new BigDecimal(log), new BigDecimal(arctan));
+			return new BigComplex(log, arctan);
 		}
 
-		public static BigComplex Log(BigDecimal value, BigDecimal baseValue) // Log of the BigComplex number to a the base of a double
+		public static BigComplex Log(BigDecimal value, BigDecimal baseValue) // Log of the BigComplex number of some base
 		{
-			return (BigDecimal.Log(value) / BigDecimal.Log(baseValue));
+			return new BigComplex(BigDecimal.Ln(value) / BigDecimal.Ln(baseValue));
 		}
-		*/
-		/*
+
+
 		public static BigComplex Exp(BigComplex value) // The BigComplex number raised to e 
 		{
-			Double temp_factor = Math.Exp((double)value.m_real);
-			Double result_re = temp_factor * Math.Cos((double)value.m_imaginary);
-			Double result_im = temp_factor * Math.Sin((double)value.m_imaginary);
-			return (new BigComplex((BigDecimal)result_re, (BigDecimal)result_im));
+			BigDecimal temp_factor = BigDecimal.Exp(value.m_real);
+			BigDecimal result_re = temp_factor * BigDecimal.Cos(value.m_imaginary);
+			BigDecimal result_im = temp_factor * BigDecimal.Sin(value.m_imaginary);
+			return (new BigComplex(result_re, result_im));
 		}
-		*/
+
 
 		public static BigComplex Sqrt(BigComplex value, int? precision = null) // Square root of the BigComplex number 
 		{
@@ -628,26 +649,16 @@ namespace ExtendedNumerics
 
 			BigDecimal halfPhase = value.Phase / new BigDecimal(2);
 
-			return BigComplex.FromPolarCoordinates(sqrtMagnitude, (double)halfPhase);
-		}
-
-		public static BigComplex Sqrt2(BigComplex value) // Square root of the BigComplex number 
-		{
-			Complex cmplx = new Complex((double)value.Real, (double)value.Imaginary);
-
-			Complex sqrt = Complex.Sqrt(cmplx);
-			return new BigComplex(sqrt);
+			return BigComplex.FromPolarCoordinates(sqrtMagnitude, halfPhase);
 		}
 
 		public static BigComplex Sqrt3(BigComplex value) // Square root of the BigComplex number 
 		{
-			Complex cmplx = new Complex((double)value.Real, (double)value.Imaginary);
+			BigDecimal sqrtMagnitude = BigDecimal.NthRoot(value.Magnitude, 2, Precision);
+			BigDecimal halfPhase = (value.Phase) / new BigDecimal(2);
 
-			double sqrtMagnitude = Math.Sqrt(cmplx.Magnitude);
-			double halfPhase = (cmplx.Phase) / 2.0f;
-
-			Complex sqrt = Complex.FromPolarCoordinates(sqrtMagnitude, halfPhase);
-			return new BigComplex(sqrt);
+			BigComplex sqrt = BigComplex.FromPolarCoordinates(sqrtMagnitude, halfPhase);
+			return sqrt;
 		}
 
 		public static BigComplex Sqrt4(BigComplex value, int? precision = null) // Square root of the BigComplex number 
@@ -669,11 +680,6 @@ namespace ExtendedNumerics
 
 		public static BigComplex Sqrt5(BigComplex value, int? precision = null) // Square root of the BigComplex number 
 		{
-			Complex cmplx = new Complex(-1, 0);
-
-			double magnitude = cmplx.Magnitude;
-			double phase = cmplx.Phase;
-
 			BigComplex z = value.Clone();
 			BigDecimal absR = Abs(value);
 			BigComplex r = new BigComplex(absR);
@@ -697,9 +703,9 @@ namespace ExtendedNumerics
 
 			BigComplex sgn = new BigComplex(new BigDecimal(value.Imaginary.Sign == 0 ? 1 : value.Imaginary.Sign));
 
-			var A = BigDecimal.Divide(BigDecimal.Add(sqrXY, value.Real), two);
-			var B1 = BigDecimal.Subtract(sqrXY, value.Real);
-			var B = BigDecimal.Divide(B1, two);
+			BigDecimal A = BigDecimal.Divide(BigDecimal.Add(sqrXY, value.Real), two);
+			BigDecimal B1 = BigDecimal.Subtract(sqrXY, value.Real);
+			BigDecimal B = BigDecimal.Divide(B1, two);
 
 			BigComplex left = new BigComplex(BigDecimal.NthRoot(BigDecimal.Abs(A), 2, precision.HasValue ? precision.Value : Precision));
 			BigComplex right = new BigComplex(BigDecimal.NthRoot(BigDecimal.Abs(B), 2, precision.HasValue ? precision.Value : Precision));
@@ -714,16 +720,6 @@ namespace ExtendedNumerics
 								);
 		}
 
-		/*
-		public static BigComplex Log10(Double value) // Log to the base of 10 of the BigComplex number 
-		{
-
-			BigComplex temp_log = Math.Log(value);
-			return (Scale(temp_log, LOG_10_INV));
-
-		}
-		*/
-
 		public static BigComplex Pow(BigComplex value, BigComplex power) // A BigComplex number raised to another BigComplex number 
 		{
 			if (power == BigComplex.Zero)
@@ -736,26 +732,19 @@ namespace ExtendedNumerics
 				return BigComplex.Zero;
 			}
 
-			double a = (double)value.m_real;
-			double b = (double)value.m_imaginary;
-			double c = (double)power.m_real;
-			double d = (double)power.m_imaginary;
+			BigDecimal a = value.m_real;
+			BigDecimal b = value.m_imaginary;
+			BigDecimal c = power.m_real;
+			BigDecimal d = power.m_imaginary;
 
-			double rho = (double)BigComplex.Abs(value);
-			double theta = Math.Atan2(b, a);
-			double newRho = c * theta + d * Math.Log(rho);
+			BigDecimal rho = BigComplex.Abs(value);
+			BigDecimal theta = BigComplex.Atan2(b, a);
+			BigDecimal newRho = c * theta + d * BigDecimal.Ln(rho);
 
-			double t = Math.Pow(rho, c) * Math.Pow(Math.E, -d * theta);
+			BigDecimal t = BigDecimal.Pow(rho, c, Precision) * BigDecimal.Pow(BigDecimal.E, BigDecimal.Negate(d) * theta, Precision);
 
-			return new BigComplex((BigDecimal)(t * Math.Cos(newRho)), (BigDecimal)(t * Math.Sin(newRho)));
+			return new BigComplex(t * BigDecimal.Cos(newRho), t * BigDecimal.Sin(newRho));
 		}
-
-		/*
-		public static BigComplex Pow(BigComplex value, Double power) // A BigComplex number raised to a real number 
-		{
-			return Pow(value, new BigComplex((BigDecimal)power, 0));
-		}
-		*/
 
 		public static BigDecimal Norm(BigComplex source)
 		{

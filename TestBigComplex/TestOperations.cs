@@ -154,14 +154,24 @@ namespace TestBigComplex
 			BigComplex toSquare = new BigComplex(0, 1);
 
 			string expected = "-1";
-			BigComplex result = BigComplex.Pow(toSquare, 2);
+			BigComplex actual = BigComplex.Pow(toSquare, 2).Round();
 
-			BigComplex actual = new BigComplex(result.Real, BigDecimal.Round(result.Imaginary));
-
-			Assert.AreEqual(expected, actual.ToString());
+			Assert.AreEqual(expected, actual.Real.ToString());
+			Assert.AreEqual(0, (double)BigDecimal.Round(actual.Imaginary), Math.Pow(10, -14));
 
 			BigDecimal.Precision = savePrecision;
 			BigDecimal.AlwaysTruncate = false;
+		}
+
+		[Test]
+		public void TestLog()
+		{
+			BigComplex test = new BigComplex(2, 4);
+
+			string expected = "1.49786613677699549669 + 1.10714871779409050301 i";
+			BigComplex actual = BigComplex.Log(test).Round();
+
+			Assert.AreEqual(expected, actual.ToString());
 		}
 	}
 }
