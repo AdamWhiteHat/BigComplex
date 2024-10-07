@@ -88,7 +88,7 @@ namespace TestBigComplex
 		[Test]
 		public void TestSquareRootNegativeTwentyFive5()
 		{
-			string expectedValue = "0 +5 i";
+			string expectedValue = "0 + 5 i";
 
 			BigComplex negativeFive = new BigComplex(new BigInteger(-25));
 
@@ -106,7 +106,7 @@ namespace TestBigComplex
 		[Test]
 		public void TestSquareRootNegativeFive2()
 		{
-			string expectedValue = "0 +2.236067977499789696 i";
+			string expectedValue = "0 + 2.236067977499789696 i";
 
 			BigComplex negativeFive = new BigComplex(new BigInteger(-5));
 
@@ -124,7 +124,7 @@ namespace TestBigComplex
 		[Test]
 		public void TestSquareRootNegativeTwentyFive6()
 		{
-			string expectedValue = "0 +5 i";
+			string expectedValue = "0 + 5 i";
 
 			BigComplex negativeFive = new BigComplex(new BigDecimal(-25));
 
@@ -142,7 +142,7 @@ namespace TestBigComplex
 		[Test]
 		public void TestSquareRootNegativeFive6()
 		{
-			string expectedValue = "0 +2.236067977499789696 i";
+			string expectedValue = "0 + 2.236067977499789696 i";
 
 			BigComplex negativeFive = new BigComplex(new BigInteger(-5));
 
@@ -160,7 +160,7 @@ namespace TestBigComplex
 		[Test]
 		public void TestSquareRootNegative9_6()
 		{
-			string expectedValue = "0 +3 i";
+			string expectedValue = "0 + 3 i";
 
 			BigComplex negativeFive = new BigComplex(new BigInteger(-9));
 
@@ -197,7 +197,7 @@ namespace TestBigComplex
 		[Test]
 		public void TestSquareRootNegative81_6()
 		{
-			string expectedValue = "0 +9 i";
+			string expectedValue = "0 + 9 i";
 
 			BigComplex negativeFive = new BigComplex(new BigInteger(-81));
 
@@ -215,7 +215,7 @@ namespace TestBigComplex
 		[Test]
 		public void TestSquareRootNegative3218147()
 		{
-			string expectedValue = "0 +1793.919451926423590615 i";
+			string expectedValue = "0 + 1793.919451926423590615 i";
 
 			BigDecimal d = new BigDecimal(0);
 

@@ -18,7 +18,7 @@ namespace TestBigComplex
 		[Test]
 		public void Parse()
 		{
-			string expected001 = "(3, 4)";
+			string expected001 = "3 + 4 i";
 			string expected004 = "3";
 
 			string test001 = "(3, 4)";

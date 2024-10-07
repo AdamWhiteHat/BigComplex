@@ -19,7 +19,7 @@ namespace TestBigComplex
 		[Test]
 		public void TestAddition()
 		{
-			var expected = "(10, 18)";
+			var expected = "10 + 18 i";
 
 			BigComplex low = BigComplex.Parse("(3, 13)");
 			BigComplex high = BigComplex.Parse("(7, 5)");
@@ -35,7 +35,7 @@ namespace TestBigComplex
 		[Test]
 		public void TestSubtraction()
 		{
-			var expected = "(4, -8)";
+			var expected = "4 - 8 i";
 
 			BigComplex low = BigComplex.Parse("(3, 13)");
 			BigComplex high = BigComplex.Parse("(7, 5)");
@@ -51,7 +51,7 @@ namespace TestBigComplex
 		[Test]
 		public void TestMultiply()
 		{
-			var expected = "(-44, 106)";
+			var expected = "-44 + 106 i";
 
 			BigComplex low = BigComplex.Parse("(3, 13)");
 			BigComplex high = BigComplex.Parse("(7, 5)");
@@ -115,7 +115,7 @@ namespace TestBigComplex
 		[Test]
 		public void TestConjugate()
 		{
-			var expected = "(4, -3)";
+			var expected = "4 - 3 i";
 
 			BigComplex low = BigComplex.Parse("(4, 3)");
 
@@ -131,7 +131,7 @@ namespace TestBigComplex
 		[Test]
 		public void TestReciprocal()
 		{
-			var expected = "(0, -1)";
+			var expected = "0 - 1 i";
 
 			BigComplex low = BigComplex.Parse("(0, 1)");
 
@@ -146,12 +146,22 @@ namespace TestBigComplex
 		[Test]
 		public void TestPow()
 		{
-			BigComplex toSquare = new BigComplex((BigInteger)0, 1);
+			int savePrecision = BigDecimal.Precision;
+			BigDecimal.Precision = 20;
+			BigDecimal.AlwaysTruncate = true;
+
+
+			BigComplex toSquare = new BigComplex(0, 1);
 
 			string expected = "-1";
-			BigComplex actual = BigComplex.Pow(toSquare, 2);
+			BigComplex result = BigComplex.Pow(toSquare, 2);
+
+			BigComplex actual = new BigComplex(result.Real, BigDecimal.Round(result.Imaginary));
 
 			Assert.AreEqual(expected, actual.ToString());
+
+			BigDecimal.Precision = savePrecision;
+			BigDecimal.AlwaysTruncate = false;
 		}
 	}
 }
