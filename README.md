@@ -2,8 +2,17 @@
 
 Arbitrary precision complex (imaginary) numbers
 
-E.g.
+E.g. 
+
   0 +1 i
+
+OR
+
+sqrt(-0.5) = 0 +0.7071067811865475244008443621048490392848359376884... i
+
+New/Major Breaking Change: As of version 3000.0.0.xxx, BigComplex's Real and Imaginary parts are of type [BigDecimal](https://github.com/AdamWhiteHat/BigDecimal) ([NuGet](https://www.nuget.org/packages/ExtendedNumerics.BigDecimal)). Ergo, this library requires the [BigDecimal](https://github.com/AdamWhiteHat/BigDecimal) library.
+
+If you do not wish to take BigDecimal as a dependency, and/or are fine with the real and imaginary parts being restricted to being integers, check out the [BigIntegerImplementation](https://github.com/AdamWhiteHat/BigComplex/tree/BigIntegerImplementation) branch of this repository.
 
 Also available on nuget: [https://www.nuget.org/packages/ExtendedNumerics.BigComplex]
 

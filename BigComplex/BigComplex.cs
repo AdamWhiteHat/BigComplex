@@ -261,7 +261,7 @@ namespace ExtendedNumerics
 
 		public static BigComplex Round(BigComplex input)
 		{
-			return Round(input, Precision);
+			return BigComplex.Round(input, Precision);
 		}
 
 		public static BigComplex Round(BigComplex input, int precision)
@@ -269,6 +269,15 @@ namespace ExtendedNumerics
 			return new BigComplex(BigDecimal.Round(input.Real, precision), BigDecimal.Round(input.Imaginary, precision));
 		}
 
+		public static BigComplex Round(BigComplex input, int precision, RoundingStrategy roundingStrategy)
+		{
+			return new BigComplex(BigDecimal.Round(input.Real, precision, roundingStrategy), BigDecimal.Round(input.Imaginary, precision, roundingStrategy));
+		}
+
+		public static BigComplex ToIntegerParts(BigComplex input)
+		{
+			return BigComplex.Round(input, 0, RoundingStrategy.AwayFromZero);			
+		}
 
 		public static BigDecimal Abs(BigComplex value)
 		{

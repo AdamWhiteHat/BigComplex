@@ -154,7 +154,9 @@ namespace TestBigComplex
 			BigComplex toSquare = new BigComplex(0, 1);
 
 			string expected = "-1";
-			BigComplex actual = BigComplex.Pow(toSquare, 2).Round();
+			BigComplex actual = BigComplex.Round(BigComplex.Pow(toSquare, 2), 0, RoundingStrategy.AwayFromZero);
+
+			TestContext.WriteLine($"({toSquare})^2 = {actual}");
 
 			Assert.AreEqual(expected, actual.Real.ToString());
 			Assert.AreEqual(0, (double)BigDecimal.Round(actual.Imaginary), Math.Pow(10, -14));
