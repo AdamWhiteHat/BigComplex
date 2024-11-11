@@ -408,33 +408,6 @@ namespace ExtendedNumerics
 
 		#endregion
 
-		#region Formatting/Parsing options 
-
-		public override String ToString()
-		{
-			if (this.m_imaginary == 0)
-			{
-				return this.m_real.ToString();
-			}
-			string sign = "+";
-			if (this.m_imaginary.Sign == -1)
-			{
-				sign = "-";
-			}
-			return String.Format(CultureInfo.CurrentCulture, "{0} {1} {2} i", this.m_real, sign, BigDecimal.Abs(this.m_imaginary));
-		}
-
-		public override Int32 GetHashCode()
-		{
-			Int32 n1 = 99999997;
-			Int32 hash_real = this.m_real.GetHashCode() % n1;
-			Int32 hash_imaginary = this.m_imaginary.GetHashCode();
-			Int32 final_hashcode = hash_real ^ hash_imaginary;
-			return (final_hashcode);
-		}
-
-		#endregion
-
 		#region Trigonometric operations (methods implementing ITrigonometric) 
 
 		public static BigComplex Sin(BigComplex value)
@@ -797,5 +770,40 @@ namespace ExtendedNumerics
 		}
 
 		#endregion
+
+		#region Formatting/Parsing options 
+		public override Int32 GetHashCode()
+		{
+			Int32 n1 = 99999997;
+			Int32 hash_real = this.m_real.GetHashCode() % n1;
+			Int32 hash_imaginary = this.m_imaginary.GetHashCode();
+			Int32 final_hashcode = hash_real ^ hash_imaginary;
+			return (final_hashcode);
+		}
+
+		public override String ToString()
+		{
+			if (this.m_imaginary == 0)
+			{
+				BigDecimal fractional = this.m_real.GetFractionalPart();
+				if (fractional.IsZero())
+				{
+					return this.m_real.WholeValue.ToString();
+				}
+				else
+				{
+					return this.m_real.ToString();
+				}
+			}
+			string sign = "+";
+			if (this.m_imaginary.Sign == -1)
+			{
+				sign = "-";
+			}
+			return String.Format(CultureInfo.CurrentCulture, "{0} {1} {2} i", this.m_real, sign, BigDecimal.Abs(this.m_imaginary));
+		}
+
+		#endregion
+
 	}
 }
