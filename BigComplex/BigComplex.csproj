@@ -20,6 +20,7 @@
 		<PackageTags>math mathematics biginteger complex-numbers arbitrary-precision numerics arithmetic numbers charp</PackageTags>
 		<PackageProjectUrl>https://www.nuget.org/packages/ExtendedNumerics.BigComplex</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/AdamWhiteHat/BigComplex</RepositoryUrl>
+		<PackageIcon>complex.png</PackageIcon>
 		<RepositoryType>git</RepositoryType>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 	</PropertyGroup>
@@ -27,25 +28,40 @@
 	<PropertyGroup>
 		<MajorVersion Condition=" '$(MajorVersion)' == '' ">3000</MajorVersion>
 		<MinorVersion Condition=" '$(MinorVersion)' == '' ">0</MinorVersion>
-		<PatchVersion Condition=" '$(PatchVersion)' == '' ">0</PatchVersion>
+		<PatchVersion Condition=" '$(PatchVersion)' == '' ">2</PatchVersion>
+		<RevisionVersion>$([System.DateTime]::Now.DayOfYear.ToString().PadLeft(3,'0'))</RevisionVersion>
+		<BuildVersion Condition=" '$(BuildVersion)' == '' ">0</BuildVersion>
 
-		<BuildTimestamp>$([System.DateTime]::Now.DayOfYear.ToString().PadLeft(3,'0'))</BuildTimestamp>
+		
+
+		<!--Appears under the property name "ProductVersion" when viewing file details in file explorer-->
+		<!--AssemblyInformationalVersion>$(FileVersion)</AssemblyInformationalVersion-->
 
 		<Version>$(MajorVersion).$(MinorVersion).$(PatchVersion)</Version>
-		<AssemblyVersion>$(Version).$(BuildTimestamp)</AssemblyVersion>
-		<PackageVersion>$(AssemblyVersion)</PackageVersion>
+		<PackageVersion>$(Version)</PackageVersion>		
+		<AssemblyVersion>$(Version).$(RevisionVersion)</AssemblyVersion>		
+		<FileVersion>$(Version).$(BuildNumber)</FileVersion>	
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="ExtendedNumerics.BigDecimal" Version="3000.0.1.312" />
-	  <PackageReference Include="System.ValueTuple" Version="4.5.0" />
+	  <None Remove="complex.png" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Include="..\README.md">
-	    <Pack>True</Pack>
-	    <PackagePath>\</PackagePath>
-	  </None>
+	  <Content Include="complex.png" Pack="true" PackagePath="\" />
+	</ItemGroup>
+
+
+	<ItemGroup>
+		<PackageReference Include="ExtendedNumerics.BigDecimal" Version="3000.0.4.132" />
+		<PackageReference Include="System.ValueTuple" Version="4.5.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="..\README.md">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
 	</ItemGroup>
 
 </Project>

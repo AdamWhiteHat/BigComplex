@@ -26,7 +26,7 @@ namespace TestBigComplex
 		[Test]
 		public void ParseIntegerComplex()
 		{
-			string expected = "3 + 4 i";
+			string expected = "3 + 4i";
 			InternalParse(expected);
 		}
 
@@ -40,14 +40,14 @@ namespace TestBigComplex
 		[Test]
 		public void ParseRealComplex()
 		{
-			string expected = "3.14159 + 4.26535 i";
+			string expected = "3.14159 + 4.26535i";
 			InternalParse(expected);
 		}
 
 		[Test]
 		public void ParseAlternateForms()
 		{
-			string expected001 = "3 + 4 i";
+			string expected001 = "3 + 4i";
 
 			string test001 = "3 + 4i";
 			string test002 = "(3 + 4i) ";

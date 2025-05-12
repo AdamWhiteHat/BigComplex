@@ -14,7 +14,6 @@ namespace ExtendedNumerics
 
 		private BigDecimal m_real;
 		private BigDecimal m_imaginary;
-		private const Double LOG_10_INV = 0.43429448190325;
 
 		#endregion
 
@@ -64,6 +63,7 @@ namespace ExtendedNumerics
 
 		#region Static Values
 
+		public static readonly BigComplex MinusOne = new BigComplex(BigDecimal.MinusOne, BigDecimal.Zero);
 		public static readonly BigComplex Zero = new BigComplex(BigDecimal.Zero, BigDecimal.Zero);
 		public static readonly BigComplex One = new BigComplex(BigDecimal.One, BigDecimal.Zero);
 		public static readonly BigComplex ImaginaryOne = new BigComplex(BigDecimal.Zero, BigDecimal.One);
@@ -633,7 +633,7 @@ namespace ExtendedNumerics
 
 			return BigComplex.FromPolarCoordinates(sqrtMagnitude, halfPhase);
 		}
-
+		/*
 		public static BigComplex Sqrt3(BigComplex value) // Square root of the BigComplex number 
 		{
 			BigDecimal sqrtMagnitude = BigDecimal.NthRoot(value.Magnitude, 2, Precision);
@@ -701,7 +701,7 @@ namespace ExtendedNumerics
 								BigDecimal.Round(result.Imaginary, precision.HasValue ? precision.Value : Precision)
 								);
 		}
-
+		*/
 		public static BigComplex Pow(BigComplex value, BigComplex power) // A BigComplex number raised to another BigComplex number 
 		{
 			if (power == BigComplex.Zero)
@@ -809,7 +809,7 @@ namespace ExtendedNumerics
 			{
 				sign = "-";
 			}
-			return String.Format(CultureInfo.CurrentCulture, "{0} {1} {2} i", this.m_real, sign, BigDecimal.Abs(this.m_imaginary));
+			return String.Format(CultureInfo.CurrentCulture, "{0} {1} {2}i", this.m_real, sign, BigDecimal.Abs(this.m_imaginary));
 		}
 
 		#endregion

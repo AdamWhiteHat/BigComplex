@@ -21,7 +21,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="ExtendedNumerics.BigDecimal" Version="3000.0.1.312" />
+		<PackageReference Include="ExtendedNumerics.BigDecimal" Version="3000.0.4.132" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
 		<PackageReference Include="NUnit" Version="3.12.0" />
 		<PackageReference Include="NUnit3TestAdapter" Version="4.1.0" />

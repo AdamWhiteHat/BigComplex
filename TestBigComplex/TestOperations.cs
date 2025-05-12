@@ -19,7 +19,7 @@ namespace TestBigComplex
 		[Test]
 		public void TestAddition()
 		{
-			var expected = "10 + 18 i";
+			var expected = "10 + 18i";
 
 			BigComplex low = BigComplex.Parse("(3, 13)");
 			BigComplex high = BigComplex.Parse("(7, 5)");
@@ -35,7 +35,7 @@ namespace TestBigComplex
 		[Test]
 		public void TestSubtraction()
 		{
-			var expected = "4 - 8 i";
+			var expected = "4 - 8i";
 
 			BigComplex low = BigComplex.Parse("(3, 13)");
 			BigComplex high = BigComplex.Parse("(7, 5)");
@@ -51,7 +51,7 @@ namespace TestBigComplex
 		[Test]
 		public void TestMultiply()
 		{
-			var expected = "-44 + 106 i";
+			var expected = "-44 + 106i";
 
 			BigComplex low = BigComplex.Parse("(3, 13)");
 			BigComplex high = BigComplex.Parse("(7, 5)");
@@ -115,7 +115,7 @@ namespace TestBigComplex
 		[Test]
 		public void TestConjugate()
 		{
-			var expected = "4 - 3 i";
+			var expected = "4 - 3i";
 
 			BigComplex low = BigComplex.Parse("(4, 3)");
 
@@ -131,7 +131,7 @@ namespace TestBigComplex
 		[Test]
 		public void TestReciprocal()
 		{
-			var expected = "0 - 1 i";
+			var expected = "0 - 1i";
 
 			BigComplex low = BigComplex.Parse("(0, 1)");
 
@@ -170,7 +170,7 @@ namespace TestBigComplex
 		{
 			BigComplex test = new BigComplex(2, 4);
 
-			string expected = "1.49786613677699549669 + 1.10714871779409050301 i";
+			string expected = "1.49786613677699549669 + 1.10714871779409050301i";
 			BigComplex actual = BigComplex.Log(test).Round();
 
 			Assert.AreEqual(expected, actual.ToString());
